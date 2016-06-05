@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
-    public static final int TOTAL_NUMBER_OF_CHROMOSOMES = 50;
+    public static final int TOTAL_NUMBER_OF_CHROMOSOMES = 6;
     public static final int TOTAL_NUMBER_OF_GENES_IN_A_CHROMOSOME = 4;
     // (0 < (a, b, c ,d) < 30 )
     private static final int MAX_VALUE = 31;
@@ -17,7 +17,6 @@ public class Main {
     public static List<Chromosome> chromosomes = new ArrayList<>(TOTAL_NUMBER_OF_CHROMOSOMES);
     public static List<Float> comulativeProbabilities = new ArrayList<>(TOTAL_NUMBER_OF_CHROMOSOMES);
 
-    private static final int TOTAL_GENERATION_TO_RUN = 50;
     private static boolean solutionFound = false;
 
     public static void main(String[] args) {
@@ -33,21 +32,15 @@ public class Main {
         evaluateFitnessValueOfChromosomes();
         int generation = 1;
 //        for (int i = 0; i < TOTAL_GENERATION_TO_RUN; i++) {
-        while (true){
-            if(!solutionFound){
+        while (true) {
+            if (!solutionFound) {
                 generation++;
 
                 //total fitness
                 totalFitness = calculateTotalFitness();
 
-                //evaluate probability
-                evaluateProbabilityOfChromosomes();
-
-                //compute comulative probability
-                computeComulativeProbability();
-
-                //select new chromosomes
-                chromosomes = getNewChromosomes();
+                //selection
+                selectChromosomes();
 
                 //cross over
                 crossOverChromosomes();
@@ -57,8 +50,8 @@ public class Main {
 
                 //Evaluation
                 evaluateFitnessValueOfChromosomes();
-            }else{
-                System.out.println("total generation : "+generation);
+            } else {
+                System.out.println("total generation : " + generation);
                 System.out.println("solution found");
                 break;
             }
@@ -66,6 +59,17 @@ public class Main {
         }
 
 
+    }
+
+    private static void selectChromosomes() {
+        //evaluate probability
+        evaluateProbabilityOfChromosomes();
+
+        //compute comulative probability
+        computeComulativeProbability();
+
+        //select new chromosomes
+        chromosomes = getNewChromosomes();
     }
 
     private static void mutateChromosomes() {
@@ -179,11 +183,13 @@ public class Main {
     private static void evaluateFitnessValueOfChromosomes() {
         for (Chromosome chromosome : chromosomes) {
             int objectiveFunctionValue = evaluateObjectiveFunctionValue(chromosome);
-            if(objectiveFunctionValue == 0){
+            System.out.print(objectiveFunctionValue + " ");
+
+            if (objectiveFunctionValue == 0) {
                 solutionFound = true;
                 System.out.println(chromosome);
             }
-            System.out.print(objectiveFunctionValue + " ");
+
             float fitness = evaluateFitnessValue(objectiveFunctionValue);
             chromosome.setFitness(fitness);
         }
@@ -196,7 +202,10 @@ public class Main {
 
 
     private static int evaluateObjectiveFunctionValue(Chromosome chromosome) {
-        return Math.abs(chromosome.getGenes().get(0) + 2 * chromosome.getGenes().get(1)
-                + 3 * chromosome.getGenes().get(2) + 4 * chromosome.getGenes().get(3) - 30);
+        int a = chromosome.getGenes().get(0);
+        int b = chromosome.getGenes().get(1);
+        int c = chromosome.getGenes().get(2);
+        int d = chromosome.getGenes().get(3);
+        return Math.abs(a + 2 * b + 3 * c + 4 * d - 30);
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chromosome {
-    private List<Integer> genes = new ArrayList<>(4);
+    private List<Integer> genes = new ArrayList<>();
     private float fitness = 0;
     private float probabilityOfSelection = 0;
 
