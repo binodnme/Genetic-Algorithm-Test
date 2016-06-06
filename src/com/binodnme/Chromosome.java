@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chromosome {
-    private List<Integer> genes = new ArrayList<>();
+    private List<Gene> genes = new ArrayList<>();
     private float fitness = 0;
     private float probabilityOfSelection = 0;
 
-    public List<Integer> getGenes() {
+    public List<Gene> getGenes() {
         return genes;
     }
 
-    public void setGenes(List<Integer> genes) {
+    public void setGenes(List<Gene> genes) {
         this.genes = genes;
     }
 

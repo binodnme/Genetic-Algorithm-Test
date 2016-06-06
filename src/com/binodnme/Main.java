@@ -6,9 +6,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
-    public static final int TOTAL_NUMBER_OF_CHROMOSOMES = 6;
+    public static final int TOTAL_NUMBER_OF_CHROMOSOMES = 100;
     public static final int TOTAL_NUMBER_OF_GENES_IN_A_CHROMOSOME = 4;
-    // (0 < (a, b, c ,d) < 30 )
+
     private static final int MAX_VALUE = 31;
     private static final int MIN_VALUE = 1;
     private static float totalFitness = 0;
@@ -26,12 +26,11 @@ public class Main {
 
         //Initialization
         generateRandomChromosomes();
-        System.out.println(chromosomes);
 
         //Evaluation
         evaluateFitnessValueOfChromosomes();
         int generation = 1;
-//        for (int i = 0; i < TOTAL_GENERATION_TO_RUN; i++) {
+
         while (true) {
             if (!solutionFound) {
                 generation++;
@@ -79,7 +78,7 @@ public class Main {
             int chromosomeIndex = randomIndex / TOTAL_NUMBER_OF_GENES_IN_A_CHROMOSOME;
             int geneIndex = randomIndex % TOTAL_NUMBER_OF_GENES_IN_A_CHROMOSOME;
             int randomNumber = ThreadLocalRandom.current().nextInt(MIN_VALUE, MAX_VALUE);
-            chromosomes.get(chromosomeIndex).getGenes().set(geneIndex, randomNumber);
+            chromosomes.get(chromosomeIndex).getGenes().set(geneIndex, new Gene(randomNumber));
         }
     }
 
@@ -173,27 +172,25 @@ public class Main {
         int randomValueB = ThreadLocalRandom.current().nextInt(MIN_VALUE, MAX_VALUE);
         int randomValueC = ThreadLocalRandom.current().nextInt(MIN_VALUE, MAX_VALUE);
         int randomValueD = ThreadLocalRandom.current().nextInt(MIN_VALUE, MAX_VALUE);
-        chromosome.getGenes().add(randomValueA);
-        chromosome.getGenes().add(randomValueB);
-        chromosome.getGenes().add(randomValueC);
-        chromosome.getGenes().add(randomValueD);
+        chromosome.getGenes().add(new Gene(randomValueA));
+        chromosome.getGenes().add(new Gene(randomValueB));
+        chromosome.getGenes().add(new Gene(randomValueC));
+        chromosome.getGenes().add(new Gene(randomValueD));
         return chromosome;
     }
 
     private static void evaluateFitnessValueOfChromosomes() {
         for (Chromosome chromosome : chromosomes) {
             int objectiveFunctionValue = evaluateObjectiveFunctionValue(chromosome);
-            System.out.print(objectiveFunctionValue + " ");
 
             if (objectiveFunctionValue == 0) {
                 solutionFound = true;
-                System.out.println(chromosome);
+                System.out.println("solution : "+chromosome);
             }
 
             float fitness = evaluateFitnessValue(objectiveFunctionValue);
             chromosome.setFitness(fitness);
         }
-        System.out.println();
     }
 
     private static float evaluateFitnessValue(int objectiveFunctionValue) {
@@ -202,10 +199,10 @@ public class Main {
 
 
     private static int evaluateObjectiveFunctionValue(Chromosome chromosome) {
-        int a = chromosome.getGenes().get(0);
-        int b = chromosome.getGenes().get(1);
-        int c = chromosome.getGenes().get(2);
-        int d = chromosome.getGenes().get(3);
+        int a = (int) chromosome.getGenes().get(0).getValue();
+        int b = (int) chromosome.getGenes().get(1).getValue();
+        int c = (int) chromosome.getGenes().get(2).getValue();
+        int d = (int) chromosome.getGenes().get(3).getValue();
         return Math.abs(a + 2 * b + 3 * c + 4 * d - 30);
     }
 }
