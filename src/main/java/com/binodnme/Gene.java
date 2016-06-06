@@ -2,22 +2,21 @@ package com.binodnme;
 
 /**
  * Generic gene class
- * @param <T>
  */
-public class Gene<T> {
-    private T value;
+public class Gene {
+    private int value;
 
     public Gene(){}
 
-    public Gene(T val){
+    public Gene(int val){
         this.value = val;
     }
 
-    public T getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
